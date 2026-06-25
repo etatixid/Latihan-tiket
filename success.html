@@ -16,13 +16,18 @@ body{margin:0;font-family:Arial,sans-serif;background:#12061f;color:#fff}
 .btn{display:block;width:100%;padding:15px;border:none;border-radius:14px;margin-top:10px;font-weight:bold}
 </style>
 </head>
-<body><script>if(!localStorage.getItem('paymentSuccess')){location.href='index.html';}</script>
+<body>
+<script>
+if(!localStorage.getItem('paymentSuccess')){location.href='index.html';}
+</script>
+
 <div class="wrap">
 <div class="card" id="ticket">
 <div class="header">
-<img src="logo-event.png">
+<img src="https://etatixid.github.io/Latihan-tiket/logo-event.png" alt="Logo Event">
 <h2>SEMESTA MERESTUI</h2>
 </div>
+
 <div class="body">
 <div class="item">Nama: <b id="nama"></b></div>
 <div class="item">Jenis: <b id="jenis"></b></div>
@@ -32,24 +37,87 @@ body{margin:0;font-family:Arial,sans-serif;background:#12061f;color:#fff}
 <div id="qrcode" class="qr"></div>
 </div>
 </div>
+
 <button class="btn" onclick="downloadTicket()">DOWNLOAD TIKET</button>
 </div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
 <script>
+emailjs.init({
+  publicKey: "wGWIMpw1BGuxHZ2UC"
+});
+
 const nama=localStorage.getItem('nama')||'Pengunjung';
 const jenis=localStorage.getItem('jenisTiket')||'-';
 const jumlah=localStorage.getItem('jumlahTiket')||'0';
 const total=localStorage.getItem('totalPembayaran')||'0';
+
 document.getElementById('nama').textContent=nama;
 document.getElementById('jenis').textContent=jenis;
 document.getElementById('jumlah').textContent=jumlah;
 document.getElementById('total').textContent='Rp '+Number(total).toLocaleString('id-ID');
-let kode=localStorage.getItem('kodeTiket'); if(!kode){kode='TKT-'+Date.now(); localStorage.setItem('kodeTiket',kode);} 
+
+let kode=localStorage.getItem('kodeTiket');
+if(!kode){
+  kode='TKT-'+Date.now();
+  localStorage.setItem('kodeTiket',kode);
+}
+
 localStorage.setItem('kodeTiket',kode);
 document.getElementById('kode').textContent=kode;
-new QRCode(document.getElementById('qrcode'),{text:kode,width:(window.innerWidth<480?170:220),height:(window.innerWidth<480?170:220)});
-function downloadTicket(){html2canvas(document.getElementById('ticket')).then(c=>{let a=document.createElement('a');a.href=c.toDataURL();a.download='ticket.png';a.click();});}
+
+new QRCode(document.getElementById('qrcode'),{
+  text:kode,
+  width:(window.innerWidth<480?170:220),
+  height:(window.innerWidth<480?170:220)
+});
+
+function kirimETicket(){
+  const email =
+    localStorage.getItem('draft_email') ||
+    localStorage.getItem('email') ||
+    '';
+
+  if(!email) return;
+
+  emailjs.send(
+    "service_hpifg78",
+    "template_w1oy5dc",
+    {
+      nama:nama,
+      jenis:jenis,
+      jumlah:jumlah,
+      total:Number(total).toLocaleString('id-ID'),
+      kode:kode,
+      email:email
+    }
+  )
+  .then(()=>console.log("E-ticket berhasil dikirim"))
+  .catch(err=>console.error("EmailJS Error:",err));
+}
+
+kirimETicket();
+
+function downloadTicket(){
+  html2canvas(document.getElementById('ticket')).then(c=>{
+    let a=document.createElement('a');
+    a.href=c.toDataURL();
+    a.download='ticket.png';
+    a.click();
+  });
+}
 </script>
-<script>localStorage.setItem('paymentSuccess','1');setTimeout(()=>{['checkout_items','jumlahTiket','totalPembayaran','jenisTiket','etatix_cart','draft_nama','draft_identitas','draft_nomorId','draft_email','draft_wa','draft_alamat'].forEach(k=>localStorage.removeItem(k));},3000);</script></body>
+
+<script>
+localStorage.setItem('paymentSuccess','1');
+setTimeout(()=>{
+['checkout_items','jumlahTiket','totalPembayaran','jenisTiket','etatix_cart','draft_nama','draft_identitas','draft_nomorId','draft_email','draft_wa','draft_alamat']
+.forEach(k=>localStorage.removeItem(k));
+},3000);
+</script>
+
+</body>
 </html>
