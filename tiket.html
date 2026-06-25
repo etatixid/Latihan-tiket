@@ -82,9 +82,9 @@
 </header>
 
 <div class="wrap">
-<div class="hero"><img src="banner.png"><div class="overlay"></div><div class="event"><h2>FESTIVAL EXPERIENCE 2026</h2><p>Tiket resmi & terpercaya</p></div></div>
+<div class="hero"><img src="banner.png"><div class="overlay"></div><div class="event"><h2>SEMESTA MERESTUI 2026</h2><p>Presale 2 • Tiket Resmi Event</p></div></div>
 
-<div class="page-title"><h3>Pilih Tiket</h3><p>Pilih kategori tiket untuk melanjutkan pemesanan.</p></div>
+<div class="page-title"><h3>Pilih Tiket Presale 2</h3><p>Pilih kategori tiket Semesta Merestui sesuai kebutuhan Anda.</p></div>
 
 <div class="progress"><div class="steps"><div class="step active">1</div><div class="line active-line"></div><div class="step inactive">2</div><div class="line"></div><div class="step inactive">3</div><div class="line"></div><div class="step inactive">4</div></div><div class="labels"><span>Kategori</span><span>Data</span><span>Pembayaran</span><span>Selesai</span></div></div>
 
@@ -104,13 +104,13 @@
 </div>
 
 <script>
-const tickets=[["FESTIVAL DAY 1",130000],["FESTIVAL DAY 2",130000],["FESTIVAL VIP 1",250000],["FESTIVAL VIP 2",250000]];
+const tickets=[["2 DAY PASS VIP",470000],["2 DAY PASS FESTIVAL",250000],["DAY 01 VIP",250000],["DAY 01 FESTIVAL",135000],["DAY 02 VIP",250000],["DAY 02 FESTIVAL",135000]];
 const cart={},cards=document.getElementById('cards');
 const rp=n=>"Rp "+n.toLocaleString('id-ID');
 
 tickets.forEach((t,i)=>{
 cart[t[0]]=0;
-cards.innerHTML+=`<div class="ticket"><div class="top"><div class="name">${t[0]}</div><div class="sale">ON SALE</div></div><div class="meta">• Tiket resmi ETATIX<br>• Akses masuk sesuai kategori<br>• Transaksi aman & terpercaya</div><div class="divider"></div><div class="bottom"><div class="price">${rp(t[1])}</div><div><button class="select-btn" id="s${i}" onclick="start(${i})">Pilih Tiket</button><div class="qty" id="q${i}"><button class="qbtn" onclick="minus(${i})">−</button><div id="n${i}">1</div><button class="qbtn" onclick="plus(${i})">+</button></div></div></div><div class="brand-footer">Official Ticketing Partner • ETATIX</div></div>`;
+cards.innerHTML+=`<div class="ticket"><div class="top"><div class="name">${t[0]}</div><div class="sale">ON SALE</div></div><div class="meta">• Event Semesta Merestui 2026<br>• Presale 2 Resmi ETATIX<br>• Tiket sesuai kategori yang dipilih</div><div class="divider"></div><div class="bottom"><div class="price">${rp(t[1])}</div><div><button class="select-btn" id="s${i}" onclick="start(${i})">Pilih Tiket</button><div class="qty" id="q${i}"><button class="qbtn" onclick="minus(${i})">−</button><div id="n${i}">1</div><button class="qbtn" onclick="plus(${i})">+</button></div></div></div><div class="brand-footer">Semesta Merestui • Official Ticketing Partner ETATIX</div></div>`;
 });
 
 function start(i){cart[tickets[i][0]]=1;toggle(i,false);render(i)}
