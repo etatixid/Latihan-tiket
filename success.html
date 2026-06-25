@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FINAL Success V6 Ultra Premium</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#12061f;color:#fff}
+.wrap{max-width:540px;margin:auto;padding:15px}
+.card{background:rgba(255,255,255,.08);border-radius:30px;overflow:hidden;border:1px solid rgba(255,255,255,.15)}
+.header{padding:25px;text-align:center;background:linear-gradient(135deg,#7c3aed,#ec4899)}
+.header img{max-width:240px;width:100%}
+.body{padding:20px}
+.item{padding:12px 0;border-bottom:1px dashed rgba(255,255,255,.15)}
+.qr{text-align:center;margin:20px 0}
+.btn{display:block;width:100%;padding:15px;border:none;border-radius:14px;margin-top:10px;font-weight:bold}
+</style>
+</head>
+<body><script>if(!localStorage.getItem('paymentSuccess')){location.href='index.html';}</script>
+<div class="wrap">
+<div class="card" id="ticket">
+<div class="header">
+<img src="logo-event.png">
+<h2>SEMESTA MERESTUI</h2>
+</div>
+<div class="body">
+<div class="item">Nama: <b id="nama"></b></div>
+<div class="item">Jenis: <b id="jenis"></b></div>
+<div class="item">Jumlah: <b id="jumlah"></b></div>
+<div class="item">Total: <b id="total"></b></div>
+<h2 id="kode"></h2>
+<div id="qrcode" class="qr"></div>
+</div>
+</div>
+<button class="btn" onclick="downloadTicket()">DOWNLOAD TIKET</button>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+const nama=localStorage.getItem('nama')||'Pengunjung';
+const jenis=localStorage.getItem('jenisTiket')||'-';
+const jumlah=localStorage.getItem('jumlahTiket')||'0';
+const total=localStorage.getItem('totalPembayaran')||'0';
+document.getElementById('nama').textContent=nama;
+document.getElementById('jenis').textContent=jenis;
+document.getElementById('jumlah').textContent=jumlah;
+document.getElementById('total').textContent='Rp '+Number(total).toLocaleString('id-ID');
+let kode=localStorage.getItem('kodeTiket'); if(!kode){kode='TKT-'+Date.now(); localStorage.setItem('kodeTiket',kode);} 
+localStorage.setItem('kodeTiket',kode);
+document.getElementById('kode').textContent=kode;
+new QRCode(document.getElementById('qrcode'),{text:kode,width:(window.innerWidth<480?170:220),height:(window.innerWidth<480?170:220)});
+function downloadTicket(){html2canvas(document.getElementById('ticket')).then(c=>{let a=document.createElement('a');a.href=c.toDataURL();a.download='ticket.png';a.click();});}
+</script>
+<script>localStorage.setItem('paymentSuccess','1');setTimeout(()=>{['checkout_items','jumlahTiket','totalPembayaran','jenisTiket','etatix_cart','draft_nama','draft_identitas','draft_nomorId','draft_email','draft_wa','draft_alamat'].forEach(k=>localStorage.removeItem(k));},3000);</script></body>
+</html>
